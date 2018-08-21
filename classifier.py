@@ -36,14 +36,18 @@ if not model:
 	model.add(keras.layers.Conv2D(
 		input_shape=(None,None,3),
 		kernel_size=8,
-		filters=1))
+		filters=1,
+		data_format="channels_last"))
 	
-	model.add(tf.keras.layers.MaxPool2D(pool_size=4))
+	model.add(tf.keras.layers.MaxPool2D(pool_size=4,
+		data_format="channels_last"))
 	
 	model.add(tf.keras.layers.Conv2D(kernel_size=25,
-		filters=FLAGS.tags))
+		filters=len(FLAGS.tags),
+		data_format="channels_last"))
 	
-	model.add(tf.keras.layers.GlobalMaxPool2D())
+	model.add(tf.keras.layers.GlobalMaxPool2D(
+		data_format="channels_last"))
 	
 	model.add(tf.keras.layers.Dense(len(FLAGS.tags),
 		activation=tf.nn.softmax))
