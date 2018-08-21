@@ -75,7 +75,7 @@ if FLAGS.input:
 	validation=dataset.take(FLAGS.validation)
 	dataset=dataset.skip(FLAGS.validation).repeat(FLAGS.epochs)
 	print("Training...")
-	model.fit(dataset,epochs=FLAGS.epochs,steps_per_epoch=FLAGS.samplesize-FLAGS.validation)
+	model.fit(dataset,epochs=FLAGS.epochs,steps_per_epoch=FLAGS.samplesize-FLAGS.validation,validation_data=validation,validation_steps=FLAGS.validation)
 	print("Done")
 	
 if FLAGS.model:
@@ -84,7 +84,7 @@ if FLAGS.model:
 pred=tf.data.Dataset.from_tensor_slices(FLAGS.classify).map(_preprocess)
 
 import csv
-with open(FLAGS.outfile,"wb" if sys.version_info <= (2,) else "w") as outfile:
+with open(FLAGS.outfile,"wb" if sys.version_info <= (2,) else "w",newline="") as outfile:
 	csvout=csv.writer(outfile)
 	csvout.writerow(["path"]+FLAGS.tags)
 	for i in range(len(FLAGS.classify)):
