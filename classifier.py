@@ -62,7 +62,7 @@ def _preprocess(imagefile):
 	image=tf.image.convert_image_dtype(image,tf.float32)
 	image=image[:,:,:3]
 	image=tf.cond(tf.less(tf.shape(image)[2],tf.constant(3)),lambda: tf.image.grayscale_to_rgb(image[:,:,:1]),lambda:image)
-	return image
+	return tf.Print(image,[image])
 
 def _parse_function(files,*tags):
 	image=_preprocess(files)
